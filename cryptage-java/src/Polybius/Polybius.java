@@ -1,3 +1,5 @@
+package Polybius;
+
 public class Polybius {
 
     // Fills a 5x5 character grid with the given alphabet string in order
@@ -27,7 +29,7 @@ public class Polybius {
         return ""; // Return empty string if character not found
     }
 
-    // Encrypts a string using the Polybius cipher
+    // Encrypts a string using the Polybius.Polybius cipher
     public static String encryptPolybius(String str) {
         str = str.toUpperCase(); // Convert input to uppercase
         StringBuilder result = new StringBuilder();
@@ -49,7 +51,7 @@ public class Polybius {
         return result.toString();
     }
 
-    // Decrypts a string encrypted with the Polybius cipher
+    // Decrypts a string encrypted with the Polybius.Polybius cipher
     public static String decryptPolybius(String encrypted) {
         StringBuilder result = new StringBuilder();
         String customAlphabet = "FXTMKPQRCLNDOYEJZUHAGISVB";
