@@ -28,9 +28,11 @@ public class Polybius {
     }
 
     // Encrypts a string using the Polybius cipher
-    public static String encryptPolybius(char[][] alphabetGrid, String str) {
+    public static String encryptPolybius(String str) {
         str = str.toUpperCase(); // Convert input to uppercase
         StringBuilder result = new StringBuilder();
+        String customAlphabet = "FXTMKPQRCLNDOYEJZUHAGISVB";
+        char[][] alphabetGrid = generateGrid(customAlphabet);
 
         String positionOfV = findPosition(alphabetGrid, 'V'); // Find position of 'V' for handling 'W'
 
@@ -48,8 +50,10 @@ public class Polybius {
     }
 
     // Decrypts a string encrypted with the Polybius cipher
-    public static String decryptPolybius(char[][] alphabetGrid, String encrypted) {
+    public static String decryptPolybius(String encrypted) {
         StringBuilder result = new StringBuilder();
+        String customAlphabet = "FXTMKPQRCLNDOYEJZUHAGISVB";
+        char[][] alphabetGrid = generateGrid(customAlphabet);
 
         // Iterate through pairs of numbers
         for (int index = 0; index < encrypted.length(); index += 2) {
@@ -61,16 +65,14 @@ public class Polybius {
         return result.toString();
     }
 
-    public static void main(String[] args) {
-        String input = "jejsuisuneleveurd'animauxd'ameriquedusudwwww";
-        String customAlphabet = "FXTMKPQRCLNDOYEJZUHAGISVB";
-
-        char[][] gridAlphabet = generateGrid(customAlphabet);
-
-        String encrypted = encryptPolybius(gridAlphabet, input);
-        System.out.println("Encrypted: " + encrypted);
-
-        String decrypted = decryptPolybius(gridAlphabet, encrypted);
-        System.out.println("Decrypted: " + decrypted);
-    }
+// Used for Testing
+//    public static void main(String input) {
+//        char[][] gridAlphabet = generateGrid(customAlphabet);
+//
+//        String encrypted = encryptPolybius(input);
+//        System.out.println("Encrypted: " + encrypted);
+//
+//        String decrypted = decryptPolybius(encrypted);
+//        System.out.println("Decrypted: " + decrypted);
+//    }
 }
