@@ -7,10 +7,26 @@ import java.util.Base64;
 import LFSR.*;
 import enums.LFSROutputType;
 
+/**
+ * This class provides AES encryption and decryption functionalities using a key generated
+ * dynamically by an LFSR (Linear Feedback Shift Register).
+ *
+ * The key generation is based on a seed string and the number of iterations, which influences
+ * the randomness of the generated AES key. It can be used to securely encrypt and decrypt messages.
+ */
 public class AES {
 
-    // Generate an AES key using LFSR
-    public static SecretKey generateAESKeyWithLFSR(String seed, int iterations, LFSROutputType outputType) throws Exception {
+    /**
+     * Generates an AES key using LFSR (Linear Feedback Shift Register).
+     *
+     * @param seed The initial value used by the LFSR (seed string).
+     * @param iterations The number of iterations the LFSR will perform to generate the key.
+     * @param outputType The output format for the LFSR result (e.g., binary string).
+     * @return A SecretKey object for AES encryption.
+     * @throws Exception If the LFSR output is not of the correct size or there are other issues.
+     */
+    public static SecretKey generateAESKeyWithLFSR(
+            String seed, int iterations, LFSROutputType outputType) throws Exception {
         // Generate a binary string using LFSR
         String lfsrOutput = LFSR.lfsr(seed, iterations, outputType);
 
@@ -31,24 +47,44 @@ public class AES {
         return new SecretKeySpec(keyBytes, "AES");
     }
 
-    // Encrypt a message using AES
+    /**
+     * Encrypts a plaintext message using the AES algorithm.
+     *
+     * @param plainText The message to be encrypted.
+     * @param secretKey The AES key used for encryption.
+     * @return The encrypted message as a Base64 encoded string.
+     * @throws Exception If there is an error during encryption.
+     */
     public static String encrypt(String plainText, SecretKey secretKey) throws Exception {
+        // Initialize the cipher in encryption mode
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+        // Encrypt the message and return the result as Base64 encoded string
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
-    // Decrypt a message using AES
+    /**
+     * Decrypts an encrypted message using the AES algorithm.
+     *
+     * @param encryptedText The encrypted message (Base64 encoded).
+     * @param secretKey The AES key used for decryption.
+     * @return The decrypted message as a string.
+     * @throws Exception If there is an error during decryption.
+     */
     public static String decrypt(String encryptedText, SecretKey secretKey) throws Exception {
+        // Initialize the cipher in decryption mode
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+        // Decode the Base64 encoded message and decrypt it
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);
         byte[] decryptedBytes = cipher.doFinal(decodedBytes);
         return new String(decryptedBytes);
     }
 
-    /*
+    /**
      * Example usage of AES with LFSR:
      *
      * // Step 1: Define parameters for LFSR
