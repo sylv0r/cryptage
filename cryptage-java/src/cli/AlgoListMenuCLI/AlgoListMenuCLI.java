@@ -15,7 +15,7 @@ public class AlgoListMenuCLI {
     public static void main(StorageActionsTypes action) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Please choose an algorithm or option to uncypt your password:");
+            System.out.println("Please choose an algorithm or option to encrypt your password:");
             System.out.println("1. no algorithm");
             System.out.println("2. Return to main menu");
             System.out.println("3. Exit");

@@ -14,7 +14,7 @@ public class CLIController {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Please choose an option:");
-            System.out.println("1. Uncrytpe a Password");
+            System.out.println("1. Encrytpe a Password");
             System.out.println("2. Save or Get a Password");
             System.out.println("3. Exit");
 
