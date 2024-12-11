@@ -66,13 +66,13 @@ public class Polybius {
     }
 
 // Used for Testing
-//    public static void main(String input) {
-//        char[][] gridAlphabet = generateGrid(customAlphabet);
-//
-//        String encrypted = encryptPolybius(input);
-//        System.out.println("Encrypted: " + encrypted);
-//
-//        String decrypted = decryptPolybius(encrypted);
-//        System.out.println("Decrypted: " + decrypted);
-//    }
+    public static void main(String[] args) {
+
+        String input = "Clement le plus beau";
+        String encrypted = encryptPolybius(input);
+        System.out.println("Encrypted: " + encrypted);
+
+        String decrypted = decryptPolybius(encrypted);
+        System.out.println("Decrypted: " + decrypted);
+    }
 }
