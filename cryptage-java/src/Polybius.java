@@ -65,10 +65,10 @@ public class Polybius {
         return result.toString();
     }
 
-// Used for Testing
+    // Used for Testing
     public static void main(String[] args) {
-
         String input = "Clement le plus beau";
+
         String encrypted = encryptPolybius(input);
         System.out.println("Encrypted: " + encrypted);
 
