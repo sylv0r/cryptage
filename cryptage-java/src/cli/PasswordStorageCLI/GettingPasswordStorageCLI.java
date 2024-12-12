@@ -15,8 +15,6 @@ public class GettingPasswordStorageCLI {
         while (true) {
             System.out.println("List of all passwords saved:");
 
-            // TODO: Implement the display of list of all passwords saved (file)
-
             System.out.println("Please enter a name for the password key (only tiny letter and symbol \" - \" :");
 
             String choice = scanner.nextLine();

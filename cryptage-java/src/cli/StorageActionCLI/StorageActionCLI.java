@@ -1,6 +1,7 @@
 package cli.StorageActionCLI;
 
 import cli.AlgoListMenuCLI.AlgoListMenuCLI;
+import cli.EncryptMenuCLI.DecryptMenuCLI;
 import enums.StorageActionsTypes;
 
 import java.util.Scanner;
@@ -28,7 +29,7 @@ public class StorageActionCLI {
                     AlgoListMenuCLI.main(StorageActionsTypes.SAVE);
                     break;
                 case "2":
-                    System.out.println("Not implemented yet.");
+                    System.out.println("your password is: " + GetPasswordMenuCLI.main());
                     break;
                 case "3":
                     System.out.println("Not implemented yet.");

@@ -1,7 +1,9 @@
 package cli;
 
+import cli.AlgoListMenuCLI.AlgoListMenuCLI;
 import cli.StorageActionCLI.StorageActionCLI;
 import cli.EncryptMenuCLI.EncryptMenuCLI;
+import enums.StorageActionsTypes;
 
 import java.util.Scanner;
 
@@ -14,20 +16,24 @@ public class CLIController {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Please choose an option:");
-            System.out.println("1. Encrytpe a Password");
-            System.out.println("2. Save or Get a Password");
-            System.out.println("3. Exit");
+            System.out.println("1. Encrypt a Password");
+            System.out.println("2. Decrypt a Password");
+            System.out.println("3. Save or Get a Password");
+            System.out.println("4. Exit");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
-                    EncryptMenuCLI.main(choice);
+                    AlgoListMenuCLI.main(StorageActionsTypes.ENCRYPT);
                     break;
                 case "2":
-                    StorageActionCLI.main();
+                    AlgoListMenuCLI.main(StorageActionsTypes.DECRYPT);
                     break;
                 case "3":
+                    StorageActionCLI.main();
+                    break;
+                case "4":
                     System.out.println("Exiting...");
                     scanner.close();
                     System.exit(0);
