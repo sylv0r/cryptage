@@ -34,7 +34,7 @@ public class CLIController {
                 case "3":
                     StorageActionCLI.main();
                     break;
-                case "a" :
+                case "ClementLeBoss" :
                     SteganoMenuCLI.main();
                     break;
                 case "4":
