@@ -5,6 +5,7 @@ import enums.AlgoAvailable;
 import enums.HashMethod;
 
 import java.util.Scanner;
+import cli.ChainMenuCLI.ChainHandler;
 
 /*
     * This class is the main controller for the DecryptMenuCLI.
@@ -29,6 +30,10 @@ public class DecryptMenuCLI {
             case SHA256, MD5:
                 VerifyHashMenuCLI.GetTrueHashMenuCLI(encryptedPassword, HashMethod.valueOf(algo.toString()));
                 return null;
+            case CHAIN:
+                System.out.println("Enter the chain-encrypted password:");
+                String chainEncryptedPassword = scanner.nextLine();
+                return ChainHandler.decryptChain(chainEncryptedPassword);
             default:
                 System.out.println("Invalid algorithm");
         }

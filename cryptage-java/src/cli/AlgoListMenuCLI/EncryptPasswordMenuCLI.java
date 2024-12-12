@@ -11,6 +11,7 @@ import cli.StorageActionCLI.SavePasswordMenuCLI;
 import enums.AlgoAvailable;
 import enums.LFSROutputType;
 import enums.StorageActionsTypes;
+import cli.ChainMenuCLI.ChainHandler;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -85,6 +86,9 @@ public class EncryptPasswordMenuCLI {
                     break;
                 case LFSR:
                     encryptedPassword = LFSR.lfsr(password, iterations, outputType);
+                    break;
+                case CHAIN:
+                    encryptedPassword = ChainHandler.encryptChain(password);
                     break;
                 case ENIGMA:
                     encryptedPassword = Enigma.main(password);
