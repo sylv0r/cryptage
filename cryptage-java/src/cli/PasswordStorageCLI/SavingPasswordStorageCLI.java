@@ -10,7 +10,6 @@ import java.util.Scanner;
  */
 public class SavingPasswordStorageCLI {
     public static void savePassword(StorageActionsTypes action) {
-        // cest commenté, tu es content ?
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Please enter a name for the password key (only tiny letter and symbol \" - \" :");
