@@ -9,5 +9,6 @@ public enum AlgoAvailable {
     POLYBIUS,
     VIGENERE,
     ENIGMA,
+    RC4,
     CHAIN,
 }

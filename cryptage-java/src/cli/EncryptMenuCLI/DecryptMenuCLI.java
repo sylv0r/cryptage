@@ -18,8 +18,8 @@ public class DecryptMenuCLI {
     public static String main(AlgoAvailable algo, String encryptedPassword) {
         Scanner scanner = new Scanner(System.in);
         switch (algo) {
-            case ROTX, VIGENERE:
-                System.out.println("Please enter your key to decrypt your password:");
+            case ROTX, VIGENERE, RC4:
+                System.out.println("Please enter your " + algo + " key to decrypt your password:");
                 key = scanner.nextLine();
                 break;
             case POLYBIUS, ENIGMA:

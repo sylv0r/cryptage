@@ -1,80 +1,83 @@
 package cli.StorageActionCLI;
 
 import FileManager.FileManager;
-import RotX.RotX;
-import Md5.Md5;
-import Polybius.Polybius;
+import cli.EncryptMenuCLI.DecryptMenuCLI;
 import enums.AlgoAvailable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * GetPasswordMenuCLI is the CLI that handles the getting of a password.
+ * GetPasswordMenuCLI is the CLI that handles the retrieval of a password.
  */
 public class GetPasswordMenuCLI {
     public static String main() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please choose the password you want to get:");
+        System.out.println("Please choose the password you want to retrieve:");
 
         // List all the files
-        List<String> files = FileManager.listFiles(); // Obtenir la liste des fichiers enregistrés
+        List<String> files = FileManager.listFiles();
         for (int i = 0; i < files.size(); i++) {
-            System.out.println((i + 1) + ". " + files.get(i)); // Afficher les fichiers disponibles
+            System.out.println((i + 1) + ". " + files.get(i));
         }
 
-        // Lire le choix de l'utilisateur
         String choice = scanner.nextLine();
 
-        // Obtenir le fichier sélectionné
-        String fileName = files.get(Integer.parseInt(choice) - 1);
-        String encryptedPassword = FileManager.getFileContent(fileName); // Lire le contenu du fichier
-
-        // Extraire les algorithmes du nom du fichier
-        String[] parts = fileName.split("-");
-        if (parts.length < 2) {
-            System.out.println("Invalid file format. No algorithms found.");
-            return null;
-        }
-
-        // Récupérer la liste des algorithmes en excluant la clé (première partie)
-        String[] algorithms = new String[parts.length - 1];
-        System.arraycopy(parts, 1, algorithms, 0, algorithms.length);
-
-        // Décryptage du mot de passe
-        String currentPassword = encryptedPassword;
-        for (int i = algorithms.length - 1; i >= 0; i--) { // Parcours inverse des algorithmes
-            String algo = algorithms[i];
-            switch (algo) {
-                case "ROTX":
-                    System.out.println("Enter key for ROTX decryption:");
-                    String rotKey = scanner.nextLine();
-                    try {
-                        currentPassword = RotX.decrypte(currentPassword, Integer.parseInt(rotKey));
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid key. ROTX decryption skipped.");
-                    }
-                    break;
-
-                case "POLYBIUS":
-                    currentPassword = Polybius.decryptPolybius(currentPassword);
-                    break;
-
-                case "MD5":
-                    System.out.println("MD5 cannot be decrypted as it is a hash function.");
-                    return null;
-
-                case "SHA256":
-                    System.out.println("SHA256 cannot be decrypted as it is a hash function.");
-                    return null;
-
-                default:
-                    System.out.println("Unknown algorithm: " + algo);
-                    return null;
+        try {
+            // Validate choice and retrieve the selected file name
+            int fileIndex = Integer.parseInt(choice) - 1;
+            if (fileIndex < 0 || fileIndex >= files.size()) {
+                System.out.println("Invalid choice. Please select a valid file.");
+                return null;
             }
+            String selectedFile = files.get(fileIndex);
+
+            // Retrieve the encrypted password from the selected file
+            String encryptedPassword = FileManager.getFileContent(selectedFile);
+
+            // Extract the list of algorithms from the file name
+            String[] parts = selectedFile.split("-");
+            if (parts.length < 2) {
+                System.out.println("Invalid file format. No algorithms found.");
+                return null;
+            }
+
+            // Collect algorithms into a list (in reverse order for decryption)
+            List<AlgoAvailable> algorithms = new ArrayList<>();
+            for (int i = parts.length - 1; i > 0; i--) {
+                try {
+                    AlgoAvailable algo = AlgoAvailable.valueOf(parts[i].toUpperCase());
+                    algorithms.add(algo);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Unknown algorithm: " + parts[i]);
+                    return null;
+                }
+            }
+
+            // Decrypt the password by applying each algorithm in reverse order
+            String currentPassword = encryptedPassword;
+            for (AlgoAvailable algo : algorithms) {
+                System.out.println("Current password: " + currentPassword);
+                currentPassword = DecryptMenuCLI.main(algo, currentPassword);
+
+                // If decryption fails, notify and stop
+                if (currentPassword == null) {
+                    System.out.println("Decryption failed for algorithm: " + algo);
+                    return null;
+                }
+            }
+
+            // Return the fully decrypted password
+            System.out.println("Decryption complete. Final password: " + currentPassword);
+            return currentPassword;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
         }
 
-        System.out.println("Decryption complete. Final password: " + currentPassword);
-        return currentPassword;
+        return null;
     }
 }

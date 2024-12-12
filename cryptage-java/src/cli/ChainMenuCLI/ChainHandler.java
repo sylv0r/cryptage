@@ -6,6 +6,9 @@ import Polybius.Polybius;
 import Sha256.Sha256;
 import LFSR.LFSR;
 import enums.LFSROutputType;
+import RC4.RC4;
+import Vigenere.Vigenere;
+import Enigma.Enigma;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,24 +19,25 @@ public class ChainHandler {
     // Encrypt a password using a chain of algorithms
     public static String encryptChain(String password) {
         Scanner scanner = new Scanner(System.in);
-        String currentPassword = password;
-        List<String> algorithmNames = new ArrayList<>();
+        String currentPassword = password; // Start with the initial password
+        List<String> algorithmNames = new ArrayList<>(); // List to store applied algorithms
 
         while (true) {
+            // Display the current state of the encrypted password
             System.out.println("\nCurrent encrypted password: " + currentPassword);
             System.out.println("Please choose the next algorithm or option:");
             System.out.println("1. ROTX");
-            System.out.println("2. MD5");
-            System.out.println("3. Polybius");
-            System.out.println("4. Sha256");
+            System.out.println("2. Polybius");
+            System.out.println("3. Vigenere");
+            System.out.println("4. RC4");
             System.out.println("5. AES");
-            System.out.println("6. LFSR");
-            System.out.println("7. Stop chaining and save");
+            System.out.println("6. Stop chaining and save");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
+                    // Apply ROTX encryption with a user-provided key
                     System.out.println("Enter key for ROTX:");
                     String rotKey = scanner.nextLine();
                     try {
@@ -45,84 +49,80 @@ public class ChainHandler {
                     break;
 
                 case "2":
-                    currentPassword = Md5.createHashWithMd5(currentPassword);
-                    algorithmNames.add("MD5");
-                    break;
-
-                case "3":
+                    // Apply Polybius encryption
                     currentPassword = Polybius.encryptPolybius(currentPassword);
                     algorithmNames.add("POLYBIUS");
                     break;
 
+                case "3":
+                    // Apply Vigenere encryption with a user-provided key
+                    System.out.println("Enter key for Vigenere:");
+                    String vigenereKey = scanner.nextLine();
+                    currentPassword = Vigenere.decryption(currentPassword, vigenereKey);
+                    algorithmNames.add("VIGENERE");
+                    break;
+
                 case "4":
-                    currentPassword = Sha256.createHashWithSha256(currentPassword);
-                    algorithmNames.add("SHA256");
+                    // Apply RC4 encryption with a user-provided key
+                    System.out.println("Enter key for RC4:");
+                    String rc4Key = scanner.nextLine();
+                    currentPassword = RC4.encryptRC4(currentPassword, rc4Key);
+                    algorithmNames.add("RC4");
                     break;
 
                 case "5":
+                    // Placeholder for AES encryption (not implemented)
                     System.out.println("AES encryption is not yet implemented.");
                     break;
 
                 case "6":
-                    System.out.println("Enter seed for LFSR:");
-                    String seed = scanner.nextLine();
-                    System.out.println("Enter output type (1 for BINARY, 2 for DECIMAL):");
-                    LFSROutputType outputType = scanner.nextLine().equals("1") ? LFSROutputType.BINAIRE : LFSROutputType.DECIMAL;
-                    System.out.println("Enter number of iterations:");
-                    try {
-                        int iterations = Integer.parseInt(scanner.nextLine());
-                        currentPassword = LFSR.lfsr(seed, iterations, outputType);
-                        algorithmNames.add("LFSR");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. LFSR encryption skipped.");
-                    }
-                    break;
-
-                case "7":
+                    // End the chaining process and display the final encrypted password
                     System.out.println("Chaining complete. Final encrypted password: " + currentPassword);
 
                     // Build and return a formatted string with algorithms in the filename
                     return String.join("-", algorithmNames) + ":" + currentPassword;
 
                 default:
+                    // Handle invalid user input
                     System.out.println("Invalid choice. Please try again.");
                     break;
             }
         }
     }
 
+    // Decrypt a password using a chain of algorithms
     public static String decryptChain(String encryptedPassword) {
         Scanner scanner = new Scanner(System.in);
 
-        // Demander le nom du fichier pour extraire les algorithmes
-        System.out.println("Please enter the file name used to save the password (e.g., toto-ROTX-POLYBIUS-MD5):");
+        // Ask the user for the file name to extract the chain of algorithms
+        System.out.println("Please enter the file name used to save the password :");
         String fileName = scanner.nextLine();
 
-        // Validation du nom du fichier
+        // Validate the file name
         if (fileName == null || fileName.isEmpty()) {
             System.out.println("Error: File name is empty. Please try again.");
             return null;
         }
 
-        // Extraire les algorithmes depuis le nom du fichier
+        // Extract the algorithms from the file name
         String[] parts = fileName.split("-");
         if (parts.length < 2) {
             System.out.println("Invalid file name format. No algorithms found.");
             return null;
         }
 
-        // Récupérer la liste des algorithmes en excluant la clé (première partie)
+        // Retrieve the list of algorithms, excluding the key (first part)
         String[] algorithms = new String[parts.length - 1];
         System.arraycopy(parts, 1, algorithms, 0, algorithms.length);
-        System.out.println("algoritmhs: " + algorithms);
 
-        // Décryptage du mot de passe
+        // Decrypt the password
         String currentPassword = encryptedPassword;
 
-        for (int i = algorithms.length - 1; i >= 0; i--) { // Parcours inverse des algorithmes
+        for (int i = algorithms.length - 1; i >= 0; i--) { // Process algorithms in reverse order
             String algo = algorithms[i];
             switch (algo) {
                 case "ROTX":
+                    // Apply ROTX decryption with a user-provided key
                     System.out.println("Enter key for ROTX decryption:");
                     String rotKey = scanner.nextLine();
                     try {
@@ -133,22 +133,25 @@ public class ChainHandler {
                     break;
 
                 case "POLYBIUS":
+                    // Apply Polybius decryption
                     currentPassword = Polybius.decryptPolybius(currentPassword);
                     break;
 
                 case "MD5":
                 case "SHA256":
+                    // Hash functions are not decryptable
                     System.out.println(algo + " cannot be decrypted as it is a hash function.");
                     return null;
 
                 default:
+                    // Handle unknown algorithms
                     System.out.println("Unknown algorithm: " + algo);
                     return null;
             }
         }
 
+        // Display the final decrypted password
         System.out.println("Decryption complete. Final password: " + currentPassword);
         return currentPassword;
     }
-
 }
