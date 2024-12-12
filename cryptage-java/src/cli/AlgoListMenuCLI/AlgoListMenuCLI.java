@@ -27,9 +27,17 @@ public class AlgoListMenuCLI {
                 System.out.println("Please choose an algorithm or option to encrypt your password:");
             }
             System.out.println("1. Rot(X)");
-            System.out.println("2. Md5");
+            if (action == StorageActionsTypes.DECRYPT) {
+                System.out.println("2. Verify integrity of Md5");
+            } else {
+                System.out.println("2. Md5");
+            }
             System.out.println("3. Polybius");
-            System.out.println("4. Sha256");
+            if (action == StorageActionsTypes.DECRYPT) {
+                System.out.println("4. Verify integrity of Sha256");
+            } else {
+                System.out.println("4. Sha256");
+            }
             System.out.println("5. AES");
             System.out.println("6. LFSR");
             System.out.println("7. Return to main menu");
@@ -81,7 +89,7 @@ public class AlgoListMenuCLI {
                     EncryptPasswordMenuCLI.main(algoSelected, action);
                     break;
                 case DECRYPT:
-                    System.out.println("Please enter your encrypted password:");
+                    System.out.println("Please enter your encrypted password or hash:");
                     String encryptedPassword = scanner.nextLine();
                     String decryptedPassword = DecryptMenuCLI.main(algoSelected, encryptedPassword);
                     System.out.println("Your decrypted password is: " + decryptedPassword);
