@@ -14,11 +14,11 @@ public class DecryptMenuCLI {
     public static String main(AlgoAvailable algo, String encryptedPassword) {
         Scanner scanner = new Scanner(System.in);
         switch (algo) {
-            case ROTX:
+            case ROTX, VIGENERE:
                 System.out.println("Please enter your key to decrypt your password:");
                 key = scanner.nextLine();
                 break;
-            case POLYBIUS:
+            case POLYBIUS, ENIGMA:
                 break;
             case SHA256, MD5, LFSR:
                 System.out.println("This algorithm is an hash algorithm, you can't decrypt it.");
