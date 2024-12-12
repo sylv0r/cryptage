@@ -1,6 +1,9 @@
 package cli.EncryptMenuCLI;
 
+import cli.VerifHashMenu.VerifyHashMenuCLI;
 import enums.AlgoAvailable;
+import enums.HashMethod;
+
 import java.util.Scanner;
 
 /*
@@ -20,8 +23,11 @@ public class DecryptMenuCLI {
                 break;
             case POLYBIUS, ENIGMA:
                 break;
-            case SHA256, MD5, LFSR:
-                System.out.println("This algorithm is an hash algorithm, you can't decrypt it.");
+            case LFSR:
+                System.out.println("This algorithm is an random algorithm, you can't decrypt it.");
+                return null;
+            case SHA256, MD5:
+                VerifyHashMenuCLI.GetTrueHashMenuCLI(encryptedPassword, HashMethod.valueOf(algo.toString()));
                 return null;
             default:
                 System.out.println("Invalid algorithm");

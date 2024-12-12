@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public class FileManager {
 
     // base path for file storage
-    private static final String filePath = ".keyvault/";
+    private static final String filePath = "./keyvault/";
 
     // Method to create a file
     public static void createFile(String file, String content) {

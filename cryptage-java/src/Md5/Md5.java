@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 public class Md5 {
     //this function returns a hash of a message
     public static String createHashWithMd5(String input) {
+        System.out.println("Creating hash with MD5 " + input);
         try {
             //static getInstance() method is called with hashing MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
