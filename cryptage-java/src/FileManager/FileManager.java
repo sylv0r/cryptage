@@ -9,10 +9,19 @@ import java.util.stream.Stream;
 public class FileManager {
 
     // base path for file storage
-    private static final String filePath = "keyvault/";
+    private static final String filePath = ".keyvault/";
 
     // Method to create a file
     public static void createFile(String file, String content) {
+        Path dir = Paths.get(filePath);
+        // Create directory if it doesn't exist
+        if (!Files.exists(dir)) {
+            try {
+                Files.createDirectories(dir);
+            } catch (IOException e) {
+                System.err.println("Error creating directory: " + e.getMessage());
+            }
+        }
         file = filePath + file;
         try (FileWriter writerFile = new FileWriter(file);
              BufferedWriter writer = new BufferedWriter(writerFile)) {
@@ -41,7 +50,7 @@ public class FileManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                content.append(line);
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + file);
@@ -58,6 +67,10 @@ public class FileManager {
             paths.filter(Files::isRegularFile) // Only include regular files
                     .forEach(path -> {
                         assert files != null;
+                        // Exclude .gitkeep file
+                        if (path.getFileName().toString().equals(".gitkeep")) {
+                            return;
+                        }
                         files.add(path.getFileName().toString());
                     });
         } catch (IOException e) {
