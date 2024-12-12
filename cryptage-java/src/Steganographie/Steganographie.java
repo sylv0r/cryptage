@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class Steganographie {
 
@@ -15,7 +16,9 @@ public class Steganographie {
      * @param message    Message to encode into the image.
      * @throws IOException If an error occurs while reading or writing files.
      */
-    public static void encodeMessage(String imagePath, String outputPath, String message) throws IOException {
+    public static void encodeMessage(String imagePath, String outputPath, String message) {
+        System.out.println(imagePath);
+        System.out.println(outputPath);
         // Validate that the message contains only supported characters
         if (!message.matches("^[a-zA-Z0-9.,!?;:()\\[\\]{}'\" \\-_]*$")) {
             throw new IllegalArgumentException("Message contains unsupported characters. Only the following are allowed: " +
@@ -23,12 +26,22 @@ public class Steganographie {
         }
 
         // Load the source image
-        BufferedImage image = ImageIO.read(new File(imagePath));
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         int width = image.getWidth();
         int height = image.getHeight();
 
         // Convert the message into a UTF-8 byte array
-        byte[] messageBytes = message.getBytes("UTF-8");
+        byte[] messageBytes = null;
+        try {
+            messageBytes = message.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         int messageLength = messageBytes.length;
 
         // Check if the image has enough capacity to store the message and the end marker
@@ -81,7 +94,11 @@ public class Steganographie {
         }
 
         // Save the modified image with the encoded message
-        ImageIO.write(image, "png", new File(outputPath));
+        try {
+            ImageIO.write(image, "png", new File(outputPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

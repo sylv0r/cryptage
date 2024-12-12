@@ -1,6 +1,7 @@
 package cli;
 
 import cli.AlgoListMenuCLI.AlgoListMenuCLI;
+import cli.SteganoMenuCLI.SteganoMenuCLI;
 import cli.StorageActionCLI.StorageActionCLI;
 import cli.EncryptMenuCLI.EncryptMenuCLI;
 import enums.StorageActionsTypes;
@@ -32,6 +33,9 @@ public class CLIController {
                     break;
                 case "3":
                     StorageActionCLI.main();
+                    break;
+                case "ClementLeBoss" :
+                    SteganoMenuCLI.main();
                     break;
                 case "4":
                     System.out.println("Exiting...");
