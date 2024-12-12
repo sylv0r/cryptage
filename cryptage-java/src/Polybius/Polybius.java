@@ -2,7 +2,11 @@ package Polybius;
 
 public class Polybius {
 
-    // Fills a 5x5 character grid with the given alphabet string in order
+    /**
+     * Generates a 5x5 grid of characters from a custom alphabet.
+     * @param customAlphabet The custom alphabet to generate the grid from.
+     * @return A char[][] array representing the 5x5 grid.
+     */
     private static char[][] generateGrid(String customAlphabet) {
         char[][] alphabetGrid = new char[5][5]; // Initialize 5x5 grid
         int index = 0;
@@ -17,7 +21,12 @@ public class Polybius {
         return alphabetGrid;
     }
 
-    // Finds the position of a character in the 5x5 grid
+    /**
+     * Finds the position of a character in a 5x5 grid.
+     * @param grid The 5x5 grid to search in.
+     * @param c The character to find.
+     * @return A string representing the row and column index of the character.
+     */
     private static String findPosition(char[][] grid, char c) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -29,7 +38,11 @@ public class Polybius {
         return ""; // Return empty string if character not found
     }
 
-    // Encrypts a string using the Polybius.Polybius cipher
+    /**
+     * Encrypts a string using the Polybius cipher.
+     * @param str The string to encrypt.
+     * @return The encrypted string.
+     */
     public static String encryptPolybius(String str) {
         str = str.toUpperCase(); // Convert input to uppercase
         StringBuilder result = new StringBuilder();
@@ -52,7 +65,11 @@ public class Polybius {
         return result.toString();
     }
 
-    // Decrypts a string encrypted with the Polybius.Polybius cipher
+    /**
+     * Decrypts a string using the Polybius cipher.
+     * @param encrypted The encrypted string to decrypt.
+     * @return The decrypted string.
+     */
     public static String decryptPolybius(String encrypted) {
         StringBuilder result = new StringBuilder();
         String customAlphabet = "FXTMKPQRCLNDOYEJZUHAGISVB";
