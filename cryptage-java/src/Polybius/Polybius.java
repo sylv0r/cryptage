@@ -44,6 +44,7 @@ public class Polybius {
 
             if (c == 'W') { // Map 'W' to the position of 'V'
                 result.append(positionOfV);
+                result.append(positionOfV);
             } else if (Character.isLetter(c)) { // Append grid position for valid letters
                 result.append(findPosition(alphabetGrid, c));
             }
