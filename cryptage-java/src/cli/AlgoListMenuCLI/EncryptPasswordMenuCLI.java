@@ -1,10 +1,12 @@
 package cli.AlgoListMenuCLI;
 
+import Enigma.Enigma;
 import LFSR.LFSR;
 import Md5.Md5;
 import Polybius.Polybius;
 import RotX.RotX;
 import Sha256.Sha256;
+import Vigenere.Vigenere;
 import cli.StorageActionCLI.SavePasswordMenuCLI;
 import enums.AlgoAvailable;
 import enums.LFSROutputType;
@@ -32,7 +34,7 @@ public class EncryptPasswordMenuCLI {
 
             password = scanner.nextLine();
 
-            if (algo == AlgoAvailable.ROTX) {
+            if (algo == AlgoAvailable.ROTX || algo == AlgoAvailable.VIGENERE) {
                 System.out.println("Please enter your key :");
                 key = scanner.nextLine();
             } else if (algo == AlgoAvailable.LFSR) {
@@ -61,6 +63,12 @@ public class EncryptPasswordMenuCLI {
                     break;
                 case LFSR:
                     encryptedPassword = LFSR.lfsr(password, iterations, outputType);
+                    break;
+                case ENIGMA:
+                    encryptedPassword = Enigma.main(password);
+                    break;
+                case VIGENERE:
+                    encryptedPassword = Vigenere.encryption(password, key);
                     break;
                 default:
                     System.out.println("This algorithm is not available for encryption.");

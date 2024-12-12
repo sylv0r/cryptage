@@ -13,6 +13,10 @@ public class DecryptClass {
                 return RotX.RotX.decrypte(password, Integer.parseInt(key));
             case POLYBIUS:
                 return Polybius.Polybius.decryptPolybius(password);
+            case ENIGMA:
+                return Enigma.Enigma.main(password);
+            case VIGENERE:
+                return Vigenere.Vigenere.decryption(password, key);
             default:
                 return null;
         }

@@ -34,6 +34,8 @@ public class AlgoListMenuCLI {
             System.out.println("6. LFSR");
             System.out.println("7. Return to main menu");
             System.out.println("8. Exit");
+            System.out.println("9: Enigma");
+            System.out.println("10: Vigenere");
 
             String choice = scanner.nextLine();
 
@@ -63,6 +65,15 @@ public class AlgoListMenuCLI {
                     scanner.close();
                     System.exit(0);
                     break;
+                case "9":
+                    algoSelected = AlgoAvailable.ENIGMA;
+                    break;
+                case "10":
+                    algoSelected = AlgoAvailable.VIGENERE;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    continue;
             }
 
             switch (action) {
