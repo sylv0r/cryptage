@@ -8,6 +8,6 @@ public enum AlgoAvailable {
     LFSR,
     POLYBIUS,
     VIGENERE,
+    ENIGMA,
     CHAIN,
-    ENIGMA
 }
