@@ -11,6 +11,8 @@ import cli.StorageActionCLI.SavePasswordMenuCLI;
 import enums.AlgoAvailable;
 import enums.LFSROutputType;
 import enums.StorageActionsTypes;
+import cli.ChainMenuCLI.ChainHandler;
+import RC4.RC4;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -86,11 +88,17 @@ public class EncryptPasswordMenuCLI {
                 case LFSR:
                     encryptedPassword = LFSR.lfsr(password, iterations, outputType);
                     break;
+                case CHAIN:
+                    encryptedPassword = ChainHandler.encryptChain(password);
+                    break;
                 case ENIGMA:
                     encryptedPassword = Enigma.main(password);
                     break;
                 case VIGENERE:
                     encryptedPassword = Vigenere.encryption(password, key);
+                    break;
+                case RC4:
+                    encryptedPassword = RC4.encryptRC4(password, key);
                     break;
                 default:
                     System.out.println("This algorithm is not available for encryption.");

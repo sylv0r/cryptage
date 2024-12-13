@@ -40,7 +40,9 @@ public class AlgoListMenuCLI {
             }
             System.out.println("5. AES");
             System.out.println("6. LFSR");
-            System.out.println("7. Return to main menu");
+            System.out.println("7. Chain Encrypt");
+            System.out.println("9. Exit");
+            System.out.println("11. Return to main menu");
             System.out.println("8. Exit");
             System.out.println("9: Enigma");
             System.out.println("10: Vigenere");
@@ -67,6 +69,9 @@ public class AlgoListMenuCLI {
                     algoSelected = AlgoAvailable.LFSR;
                     break;
                 case "7":
+                    algoSelected = AlgoAvailable.CHAIN;
+                    break;
+                case "11":
                     CLIController.main(null);
                 case "8":
                     System.out.println("Exiting...");

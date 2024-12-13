@@ -3,16 +3,18 @@ package cli.StorageActionCLI;
 import FileManager.FileManager;
 import cli.EncryptMenuCLI.DecryptMenuCLI;
 import enums.AlgoAvailable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * GetPasswordMenuCLI is the CLI that handles the getting of a password.
+ * GetPasswordMenuCLI is the CLI that handles the retrieval of a password.
  */
 public class GetPasswordMenuCLI {
     public static String main() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please choose the password you want to get :");
+        System.out.println("Please choose the password you want to retrieve:");
 
         // List all the files
         List<String> files = FileManager.listFiles();
@@ -22,13 +24,60 @@ public class GetPasswordMenuCLI {
 
         String choice = scanner.nextLine();
 
-        // Get the password on the file selected
-        String encryptedPassword = FileManager.getFileContent(files.get(Integer.parseInt(choice) - 1));
+        try {
+            // Validate choice and retrieve the selected file name
+            int fileIndex = Integer.parseInt(choice) - 1;
+            if (fileIndex < 0 || fileIndex >= files.size()) {
+                System.out.println("Invalid choice. Please select a valid file.");
+                return null;
+            }
+            String selectedFile = files.get(fileIndex);
 
-        // Decrypt the password
-        AlgoAvailable algo = AlgoAvailable.valueOf(files.get(Integer.parseInt(choice) - 1).split("-")[1]);
+            // Retrieve the encrypted password from the selected file
+            String encryptedPassword = FileManager.getFileContent(selectedFile);
 
-        return DecryptMenuCLI.main(algo, encryptedPassword);
+            // Extract the list of algorithms from the file name
+            String[] parts = selectedFile.split("-");
+            if (parts.length < 2) {
+                System.out.println("Invalid file format. No algorithms found.");
+                return null;
+            }
+
+            // Collect algorithms into a list (in reverse order for decryption)
+            List<AlgoAvailable> algorithms = new ArrayList<>();
+            for (int i = parts.length - 1; i > 0; i--) {
+                try {
+                    AlgoAvailable algo = AlgoAvailable.valueOf(parts[i].toUpperCase());
+                    algorithms.add(algo);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Unknown algorithm: " + parts[i]);
+                    return null;
+                }
+            }
+
+            // Decrypt the password by applying each algorithm in reverse order
+            String currentPassword = encryptedPassword;
+            for (AlgoAvailable algo : algorithms) {
+                System.out.println("Current password: " + currentPassword);
+                currentPassword = DecryptMenuCLI.main(algo, currentPassword);
+
+                // If decryption fails, notify and stop
+                if (currentPassword == null) {
+                    System.out.println("Decryption failed for algorithm: " + algo);
+                    return null;
+                }
+            }
+
+            // Return the fully decrypted password
+            System.out.println("Decryption complete. Final password: " + currentPassword);
+            return currentPassword;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
+
+        return null;
     }
 }
-

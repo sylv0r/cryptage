@@ -17,6 +17,8 @@ public class DecryptClass {
                 return Enigma.Enigma.main(password);
             case VIGENERE:
                 return Vigenere.Vigenere.decryption(password, key);
+            case RC4:
+                return RC4.RC4.decryptRC4(password, key);
             default:
                 return null;
         }
