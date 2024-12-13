@@ -20,15 +20,12 @@ public class AES {
      * Generates an AES key using LFSR (Linear Feedback Shift Register).
      *
      * @param seed The initial value used by the LFSR (seed string).
-     * @param iterations The number of iterations the LFSR will perform to generate the key.
-     * @param outputType The output format for the LFSR result (e.g., binary string).
      * @return A SecretKey object for AES encryption.
      * @throws Exception If the LFSR output is not of the correct size or there are other issues.
      */
-    public static SecretKey generateAESKeyWithLFSR(
-            String seed, int iterations, LFSROutputType outputType) throws Exception {
+    public static SecretKey generateAESKeyWithLFSR(String seed) throws Exception {
         // Generate a binary string using LFSR
-        String lfsrOutput = LFSR.lfsr(seed, iterations, outputType);
+        String lfsrOutput = LFSR.lfsr(seed, 3, LFSROutputType.BINAIRE);
 
         // Ensure the output is 256 bits (32 bytes) for AES
         if (lfsrOutput.length() < 256) {
@@ -51,11 +48,12 @@ public class AES {
      * Encrypts a plaintext message using the AES algorithm.
      *
      * @param plainText The message to be encrypted.
-     * @param secretKey The AES key used for encryption.
      * @return The encrypted message as a Base64 encoded string.
      * @throws Exception If there is an error during encryption.
      */
-    public static String encrypt(String plainText, SecretKey secretKey) throws Exception {
+    public static String encrypt(String plainText, String key) throws Exception {
+        // Generate a random AES key
+        SecretKey secretKey = generateAESKeyWithLFSR(key);
         // Initialize the cipher in encryption mode
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -69,11 +67,12 @@ public class AES {
      * Decrypts an encrypted message using the AES algorithm.
      *
      * @param encryptedText The encrypted message (Base64 encoded).
-     * @param secretKey The AES key used for decryption.
      * @return The decrypted message as a string.
      * @throws Exception If there is an error during decryption.
      */
-    public static String decrypt(String encryptedText, SecretKey secretKey) throws Exception {
+    public static String decrypt(String encryptedText, String key) throws Exception {
+
+        SecretKey secretKey = generateAESKeyWithLFSR(key);
         // Initialize the cipher in decryption mode
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -83,6 +82,7 @@ public class AES {
         byte[] decryptedBytes = cipher.doFinal(decodedBytes);
         return new String(decryptedBytes);
     }
+
 
     /**
      * Example usage of AES with LFSR:

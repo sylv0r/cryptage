@@ -59,20 +59,30 @@ public class Enigma {
         return result.toString();
     }
 
-    public static String main(String input) {
+    public static String main(String input, String positions) {
+
+        if (positions.length() != 3) {
+            return "Error: positions must be 3 characters long";
+        }
+        if (!positions.chars().allMatch(Character::isLetter)) {
+            return "Error: positions must be letters";
+        }
+        positions = positions.toUpperCase();
+
         // init rotors and reflector
         String[] rotors = {
                 "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
                 "AJDKSIRUXBLHWTMCQGZNPYFVOE",
                 "BDFHJLCPRTXVZNYEIWGAKMUSQO"
         };
-        String reflector = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+        String reflector = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
         // init rotor positions
-        char[] initialPositions = {'A', 'B', 'C'};
-
-        // 1
+        char[] initialPositions = positions.toCharArray();
+        System.out.println(initialPositions);
+        // create enigma object
         Enigma enigma = new Enigma(rotors, reflector, initialPositions);
-
         return enigma.encryptDecrypt(input);
     }
+
+
 }

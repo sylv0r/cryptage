@@ -20,7 +20,7 @@ public class SavePasswordMenuCLI {
             return;
         }
 
-        System.out.println("Please enter the key (the index, to find again your password later) you want for your password :");
+        System.out.println("Please enter the file name you want for your password :");
         String key = scanner.nextLine();
 
         // check if the key is valid

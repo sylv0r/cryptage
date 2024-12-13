@@ -19,7 +19,9 @@ public class EncryptMenuCLI {
 
             switch (choice) {
                 case "1":
+                    System.out.println("=============================");
                     System.out.println("Your password is: " + password);
+                    System.out.println("=============================");
                     break;
                 case "2":
                     return;
