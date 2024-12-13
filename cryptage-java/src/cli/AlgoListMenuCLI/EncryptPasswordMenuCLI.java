@@ -1,5 +1,6 @@
 package cli.AlgoListMenuCLI;
 
+import AES.AES;
 import Enigma.Enigma;
 import LFSR.LFSR;
 import Md5.Md5;
@@ -35,44 +36,81 @@ public class EncryptPasswordMenuCLI {
     public static void main(AlgoAvailable algo, StorageActionsTypes action) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
             if (algo == AlgoAvailable.LFSR) {
-                System.out.println("Please enter your seed :");
+                System.out.println("=======================================");
+                System.out.println("           LFSR Configuration          ");
+                System.out.println("=======================================");
+                System.out.println("Please enter your seed:");
             } else {
-                System.out.println("Please enter your password :");
+                System.out.println("=======================================");
+                System.out.println("           Enter Your Password          ");
+                System.out.println("=======================================");
+                System.out.println("Please enter your password:");
             }
 
             password = scanner.nextLine();
 
-            // do the logic for the key and salt
-            if (algo == AlgoAvailable.ROTX || algo == AlgoAvailable.VIGENERE) {
-                System.out.println("Please enter your key :");
+            // Handle logic for key and salt
+            if (algo == AlgoAvailable.ROTX || algo == AlgoAvailable.VIGENERE
+                    || algo == AlgoAvailable.RC4 || algo == AlgoAvailable.AES) {
+                System.out.println("=======================================");
+                System.out.println("             Key Input                 ");
+                System.out.println("=======================================");
+                System.out.println("Please enter your key:");
                 key = scanner.nextLine();
             } else if (algo == AlgoAvailable.LFSR) {
-                System.out.println("Please enter the output type :");
-                System.out.println("1. BINARY");
-                System.out.println("2. DECIMAL");
+                System.out.println("=======================================");
+                System.out.println("         Output Type Selection         ");
+                System.out.println("=======================================");
+                System.out.println("[1] BINARY");
+                System.out.println("[2] DECIMAL");
                 String choice = scanner.nextLine();
                 outputType = choice.equals("1") ? LFSROutputType.BINAIRE : LFSROutputType.DECIMAL;
-                System.out.println("Please enter the number of iterations :");
-                iterations = Integer.parseInt(scanner.nextLine().substring(0, 9));
+
+                System.out.println("=======================================");
+                System.out.println("        Number of Iterations           ");
+                System.out.println("=======================================");
+                System.out.println("Please enter the number of iterations:");
+                try {
+                    iterations = Integer.parseInt(scanner.nextLine().substring(0, 9));
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Invalid number of iterations. Please enter a valid number.");
+                    return;
+                }
             } else if (algo == AlgoAvailable.MD5 || algo == AlgoAvailable.SHA256) {
-                System.out.println("Do you want to add salt?");
-                System.out.println("1. Yes");
-                System.out.println("2. No");
+                System.out.println("=======================================");
+                System.out.println("             Add Salt?                 ");
+                System.out.println("=======================================");
+                System.out.println("[1] Yes");
+                System.out.println("[2] No");
                 String choice = scanner.nextLine();
 
                 if (choice.equals("1")) {
                     // Generate LFSR output and append to the password
                     salt = LFSR.lfsr(password, 1, LFSROutputType.DECIMAL);
                     password = salt + password;
-                    System.out.println("Your salt is : " + salt);
+                    System.out.println("Your salt is: " + salt);
                 } else if (!choice.equals("2")) {
                     System.out.println("Invalid choice. Proceeding without salt.");
                 }
+            } else if (algo == AlgoAvailable.ENIGMA) {
+                System.out.println("=======================================");
+                System.out.println("       Enigma Rotor Configuration      ");
+                System.out.println("=======================================");
+                System.out.println("Please enter the initial position of the rotors (e.g., AAA or AZO):");
+                key = scanner.nextLine();
             }
 
             switch (algo) {
                 case ROTX:
+                    if (key == null || !key.matches("\\d+")) {
+                        System.out.println("Error: Key is null or invalid");
+                        return;
+                    }
+
                     encryptedPassword = RotX.encrypte(password, Integer.parseInt(key));
                     break;
                 case MD5:
@@ -92,13 +130,24 @@ public class EncryptPasswordMenuCLI {
                     encryptedPassword = ChainHandler.encryptChain(password);
                     break;
                 case ENIGMA:
-                    encryptedPassword = Enigma.main(password);
+                    encryptedPassword = Enigma.main(password, key);
                     break;
                 case VIGENERE:
                     encryptedPassword = Vigenere.encryption(password, key);
                     break;
                 case RC4:
-                    encryptedPassword = RC4.encryptRC4(password, key);
+                    try {
+                        encryptedPassword = RC4.encryptRC4(password, key);
+                    } catch (Exception e) {
+                        System.out.println("Error: RC4 encryption failed.");
+                    }
+                    break;
+                case AES:
+                    try {
+                        encryptedPassword = AES.encrypt(password, key);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     System.out.println("This algorithm is not available for encryption.");

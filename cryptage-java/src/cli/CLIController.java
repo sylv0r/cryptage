@@ -1,6 +1,7 @@
 package cli;
 
 import cli.AlgoListMenuCLI.AlgoListMenuCLI;
+import cli.EnigmaMenuCli.EnigmaMenuCli;
 import cli.HelpMenuCLI.HelpMenuCLI;
 import cli.SteganoMenuCLI.SteganoMenuCLI;
 import cli.StorageActionCLI.StorageActionCLI;
@@ -18,12 +19,19 @@ public class CLIController {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Please choose an option:");
-            System.out.println("1. Encrypt a Password");
-            System.out.println("2. Decrypt a Password");
-            System.out.println("3. Save or Get a Password");
-            System.out.println("4. Help");
-            System.out.println("5. Exit");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("=======================================");
+            System.out.println("         Please choose an option:    ");
+            System.out.println("=======================================");
+            System.out.println("[1] Encrypt or Hash a Password");
+            System.out.println("[2] Decrypt or Hash a Password");
+            System.out.println("[3] Save or Get saved Password");
+            System.out.println("[4] Help");
+            System.out.println("[5] Exit");
+            System.out.println("=======================================");
+
 
             String choice = scanner.nextLine();
 
@@ -45,6 +53,12 @@ public class CLIController {
                     scanner.close();
                     System.exit(0);
                     break;
+                case "ClementLeBoss" :
+                    SteganoMenuCLI.main();
+                    break;
+                case "hh":
+                    EnigmaMenuCli.main();
+                    break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;
@@ -52,5 +66,4 @@ public class CLIController {
         }
     }
 }
-
 

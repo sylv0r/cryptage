@@ -1,5 +1,6 @@
 package cli.EncryptMenuCLI;
 
+import Enigma.Enigma;
 import cli.VerifHashMenu.VerifyHashMenuCLI;
 import enums.AlgoAvailable;
 import enums.HashMethod;
@@ -18,11 +19,11 @@ public class DecryptMenuCLI {
     public static String main(AlgoAvailable algo, String encryptedPassword) {
         Scanner scanner = new Scanner(System.in);
         switch (algo) {
-            case ROTX, VIGENERE, RC4:
+            case ROTX, VIGENERE, RC4, AES:
                 System.out.println("Please enter your " + algo + " key to decrypt your password:");
                 key = scanner.nextLine();
                 break;
-            case POLYBIUS, ENIGMA:
+            case POLYBIUS:
                 break;
             case LFSR:
                 System.out.println("This algorithm is an random algorithm, you can't decrypt it.");
@@ -34,6 +35,10 @@ public class DecryptMenuCLI {
                 System.out.println("Enter the chain-encrypted password:");
                 String chainEncryptedPassword = scanner.nextLine();
                 return ChainHandler.decryptChain(chainEncryptedPassword);
+            case ENIGMA:
+                System.out.println("Please enter the initial position of the rotors (ex: AAA or AZO):");
+                key = scanner.nextLine();
+                break;
             default:
                 System.out.println("Invalid algorithm");
         }

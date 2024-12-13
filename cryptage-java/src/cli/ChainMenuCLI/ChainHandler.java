@@ -24,14 +24,23 @@ public class ChainHandler {
 
         while (true) {
             // Display the current state of the encrypted password
-            System.out.println("\nCurrent encrypted password: " + currentPassword);
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("=======================================");
+            System.out.println("        Current Encrypted Password     ");
+            System.out.println("=======================================");
+            System.out.println("Current encrypted password: " + currentPassword);
+            System.out.println("");
             System.out.println("Please choose the next algorithm or option:");
-            System.out.println("1. ROTX");
-            System.out.println("2. Polybius");
-            System.out.println("3. Vigenere");
-            System.out.println("4. RC4");
-            System.out.println("5. AES");
-            System.out.println("6. Stop chaining and save");
+            System.out.println("[1] ROTX");
+            System.out.println("[2] Polybius");
+            System.out.println("[3] Vigenere");
+            System.out.println("[4] RC4");
+            System.out.println("[5] AES");
+            System.out.println("[6] Stop chaining and save");
+            System.out.println("=======================================");
+
 
             String choice = scanner.nextLine();
 

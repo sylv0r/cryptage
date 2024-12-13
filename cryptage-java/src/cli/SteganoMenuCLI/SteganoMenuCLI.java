@@ -14,14 +14,17 @@ public class SteganoMenuCLI {
 
     public static void main() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Stegano Menu !");
+        System.out.println("=======================================");
+        System.out.println("            Stegano Menu              ");
+        System.out.println("=======================================");
+        System.out.println("");
 
-        // Display menu options
-        System.out.println("Select an option :");
-        System.out.println("1: hide text : ");
-        System.out.println("2: Unhide text : ");
-        System.out.println("3: Return to main menu");
-        System.out.println("4: Exit");
+        System.out.println("Select an option:");
+        System.out.println("[1] Hide text");
+        System.out.println("[2] Unhide text");
+        System.out.println("[3] Return to main menu");
+        System.out.println("[4] Exit");
+        System.out.println("=======================================");
 
         String choosed = scanner.nextLine();  // User choice
 
@@ -33,9 +36,9 @@ public class SteganoMenuCLI {
                 message = scanner.nextLine();  // Get the message from the user
                 message = message.isEmpty() ? "test" : message;  // Set a default message if empty
 
-                System.out.println("Enter your image path (default : cryptage-java/img/Mona_Lisa.jpg");
+                System.out.println("Enter your image path (default : ./img/Mona_Lisa.jpg");
                 String nextLine = scanner.nextLine();
-                imagePath = nextLine.isEmpty() ? "cryptage-java/img/Mona_Lisa.jpg" : nextLine;  // Default image path if empty
+                imagePath = nextLine.isEmpty() ? "./img/Mona_Lisa.jpg" : nextLine;  // Default image path if empty
 
                 // Automatically set output path to Desktop
                 String desktopPath = System.getProperty("user.home") + "/Desktop";

@@ -21,31 +21,54 @@ public class AlgoListMenuCLI {
     public static void main(StorageActionsTypes action) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
             if (action == StorageActionsTypes.DECRYPT) {
-                System.out.println("Please choose an algorithm to decrypt your password:");
+                System.out.println("=======================================");
+                System.out.println(" Please choose a decryption algorithm:");
+                System.out.println("=======================================");
             } else {
-                System.out.println("Please choose an algorithm or option to encrypt your password:");
+                System.out.println("=======================================");
+                System.out.println(" Please choose an encryption or hashing algorithm:");
+                System.out.println("=======================================");
             }
-            System.out.println("1. Rot(X)");
+
+            System.out.println("Available encryption algorithms:");
+            System.out.println("[1] Rot(X)");
+            System.out.println("[2] Polybius");
+            System.out.println("[3] Vigenere");
+            System.out.println("[4] RC4");
+            System.out.println("[5] AES");
+            System.out.println("");
+
+            System.out.println("Available hashing algorithms:");
             if (action == StorageActionsTypes.DECRYPT) {
-                System.out.println("2. Verify integrity of Md5");
+                System.out.println("[6] Verify integrity of Md5");
             } else {
-                System.out.println("2. Md5");
+                System.out.println("[6] Md5");
             }
-            System.out.println("3. Polybius");
             if (action == StorageActionsTypes.DECRYPT) {
-                System.out.println("4. Verify integrity of Sha256");
+                System.out.println("[7] Verify integrity of Sha256");
             } else {
-                System.out.println("4. Sha256");
+                System.out.println("[7] Sha256");
             }
-            System.out.println("5. AES");
-            System.out.println("6. LFSR");
-            System.out.println("7. Chain Encrypt");
-            System.out.println("9. Exit");
-            System.out.println("11. Return to main menu");
-            System.out.println("8. Exit");
-            System.out.println("9: Enigma");
-            System.out.println("10: Vigenere");
+            System.out.println("");
+
+            System.out.println("Available random generator algorithms:");
+            System.out.println("[8] LFSR");
+            System.out.println("");
+
+            if (action != StorageActionsTypes.DECRYPT) {
+                System.out.println("Other options:");
+                System.out.println("[9] Chain Encrypt");
+            }
+            System.out.println("");
+
+            System.out.println("[10] Return to main menu");
+            System.out.println("[11] Exit");
+            System.out.println("=======================================");
+
 
             String choice = scanner.nextLine();
 
@@ -54,35 +77,39 @@ public class AlgoListMenuCLI {
                     algoSelected = AlgoAvailable.ROTX;
                     break;
                 case "2":
-                    algoSelected = AlgoAvailable.MD5;
-                    break;
-                case "3":
                     algoSelected = AlgoAvailable.POLYBIUS;
                     break;
+                case "3":
+                    algoSelected = AlgoAvailable.VIGENERE;
+                    break;
                 case "4":
-                    algoSelected = AlgoAvailable.SHA256;
+                    algoSelected = AlgoAvailable.RC4;
                     break;
                 case "5":
                     algoSelected = AlgoAvailable.AES;
                     break;
                 case "6":
-                    algoSelected = AlgoAvailable.LFSR;
+                    algoSelected = AlgoAvailable.MD5;
                     break;
                 case "7":
+                    algoSelected = AlgoAvailable.SHA256;
+                    break;
+                case "8":
+                    algoSelected = AlgoAvailable.LFSR;
+                    break;
+                case "9":
+                    if (action == StorageActionsTypes.ENCRYPT) {
+                        System.out.println("Invalid choice. Please try again.");
+                        continue;
+                    }
                     algoSelected = AlgoAvailable.CHAIN;
                     break;
-                case "11":
+                case "10":
                     CLIController.main(null);
-                case "8":
+                case "11":
                     System.out.println("Exiting...");
                     scanner.close();
                     System.exit(0);
-                    break;
-                case "9":
-                    algoSelected = AlgoAvailable.ENIGMA;
-                    break;
-                case "10":
-                    algoSelected = AlgoAvailable.VIGENERE;
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
